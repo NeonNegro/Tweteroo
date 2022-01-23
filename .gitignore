@@ -1,4 +1,5 @@
 assets/
 css/
+node_modules/
 index.html
 script.js
