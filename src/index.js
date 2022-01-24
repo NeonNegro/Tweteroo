@@ -12,11 +12,11 @@ const tweets = [];
 
 
 function newUser(user) {
-  return { ...user };
+  return {
+    username: user.username,
+    avatar: user.avatar
+  }
 }
-
-
-
 
 
 
@@ -36,19 +36,17 @@ app.post("/sign-up", (req, res) => {
 });
 app.post("/tweets", (req, res) => {
   const tweet = req.body;
+  const {avatar} = users.find(u => u.username === tweet.username);
   if (tweets.length >= MAX_SIZE) tweets.shift();
-  tweets.push(tweet);
+  tweets.push({...tweet, avatar});
   res.status(OK).send("OK");
 });
-// app.get('/sample/:id', routes.sample);
 app.get("/tweets/:username?", (req, res) => {
   let username =  req.params.username;
   console.log(username);
-  let messages = (username !== undefined) ? tweets.filter(t => t.username === username) : tweets;
-  // messages = tweets.map((t) => {
-  //   t["avatar"] = users.find((u) => u.username === t.username).avatar;
-  //   return t;
-  // });
+  let messages = (username !== undefined) 
+    ? tweets.filter(t => t.username === username) 
+    : tweets;
   res.send(messages);
 });
 
